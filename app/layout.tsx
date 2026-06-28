@@ -37,7 +37,7 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${plusJakarta.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
-      <body className="h-screen overflow-hidden flex bg-[#0A0B10]">
+      <body className="h-screen overflow-hidden flex bg-background">
         <Providers>
           {/* Left Sidebar - Control Console */}
           <AppSidebar />
@@ -45,7 +45,7 @@ export default function RootLayout({
           {/* Right Content Area - The Matrix */}
           <div className="flex-1 flex flex-col min-w-0">
             <TopNavbar />
-            <main className="flex-1 overflow-y-auto scrollbar-cyber bg-[#0A0B10] relative scanline-overlay">
+            <main className="flex-1 overflow-y-auto scrollbar-cyber bg-background relative scanline-overlay">
               {children}
             </main>
           </div>
