@@ -47,9 +47,9 @@ export function TopNavbar() {
     <header className="h-[70px] flex-shrink-0 border-b border-border/50 bg-[#0D0E14]/80 backdrop-blur-xl flex items-center px-6">
       {/* Left Zone: Time + Quote */}
       <div className="flex items-center gap-4 flex-1 min-w-0">
-        {/* Chronograph */}
+        {/* Atomic Chronograph */}
         <div className="flex-shrink-0">
-          <span className="font-mono text-sm font-bold text-primary text-glow-cyan tracking-wider">
+          <span className="font-mono text-sm font-bold text-primary text-glow-cyan tracking-[0.15em]">
             {time}
           </span>
         </div>
@@ -59,10 +59,10 @@ export function TopNavbar() {
 
         {/* Rolling Quote */}
         <div className="min-w-0 flex-1">
-          <p className="text-[11px] font-mono text-[#A0AEC0]/60 italic truncate tracking-wide">
-            <span className="text-muted-foreground/40">[</span>
+          <p className="text-[11px] font-mono text-[#A0AEC0]/50 italic truncate tracking-wide transition-opacity duration-500">
+            <span className="text-muted-foreground/30">[</span>
             {" "}{QUOTES[quoteIndex]}{" "}
-            <span className="text-muted-foreground/40">]</span>
+            <span className="text-muted-foreground/30">]</span>
           </p>
         </div>
       </div>
