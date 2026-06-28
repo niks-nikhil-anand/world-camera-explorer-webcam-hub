@@ -16,12 +16,12 @@ export function CameraCard({ camera, className }: CameraCardProps) {
     <Link
       href={`/camera/${camera.slug}`}
       className={cn(
-        "group relative flex flex-col overflow-hidden rounded-lg border border-border/50 bg-[#121420]/65 backdrop-blur-md transition-all duration-300 hover:border-primary/60 hover:glow-cyan-strong",
+        "group relative flex flex-col overflow-hidden rounded-lg border border-border/50 bg-card/80 backdrop-blur-md transition-all duration-300 hover:border-primary/60 dark:hover:glow-cyan-strong hover:shadow-lg",
         className
       )}
     >
       {/* Thumbnail - 16:9 */}
-      <div className="relative aspect-video overflow-hidden bg-black/40">
+      <div className="relative aspect-video overflow-hidden bg-muted/30">
         <Image
           src={camera.thumbnail}
           alt={camera.name}
@@ -42,7 +42,7 @@ export function CameraCard({ camera, className }: CameraCardProps) {
               className={cn(
                 "h-2 w-2 rounded-full",
                 camera.isLive
-                  ? "bg-[#39FF14] animate-pulse-live"
+                  ? "bg-green-500 dark:bg-[#39FF14] animate-pulse-live"
                   : "bg-red-400"
               )}
             />
@@ -50,7 +50,7 @@ export function CameraCard({ camera, className }: CameraCardProps) {
               className={cn(
                 "text-[10px] font-mono font-bold uppercase tracking-wider",
                 camera.isLive
-                  ? "text-[#39FF14] text-glow-green"
+                  ? "text-green-400 dark:text-[#39FF14] dark:text-glow-green"
                   : "text-red-300"
               )}
             >
@@ -74,12 +74,12 @@ export function CameraCard({ camera, className }: CameraCardProps) {
           <h3 className="text-sm font-semibold text-white truncate leading-tight group-hover:text-primary transition-colors">
             {camera.name}
           </h3>
-          <div className="flex items-center gap-1.5 mt-1 text-[11px] text-[#A0AEC0]/80">
+          <div className="flex items-center gap-1.5 mt-1 text-[11px] text-white/70">
             <MapPin className="h-3 w-3 flex-shrink-0" />
             <span className="truncate">
               {camera.city}, {camera.country}
             </span>
-            <span className="text-muted-foreground">•</span>
+            <span className="text-white/50">•</span>
             <span className="capitalize">{camera.category}</span>
           </div>
         </div>
