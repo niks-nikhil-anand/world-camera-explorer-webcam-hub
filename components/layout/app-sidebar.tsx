@@ -155,15 +155,19 @@ export function AppSidebar() {
   const [showAllRegions, setShowAllRegions] = useState(false)
 
   return (
-    <aside className="w-[340px] h-screen flex-shrink-0 border-r border-border/50 bg-[#0D0E14] flex flex-col overflow-hidden relative">
+    <aside className="w-[340px] h-screen flex-shrink-0 border-r border-border/50 bg-sidebar flex flex-col overflow-hidden relative">
       {/* Micro-etched glass edge */}
       <div className="absolute top-0 right-0 bottom-0 w-px bg-gradient-to-b from-primary/20 via-primary/5 to-primary/20" />
 
       {/* Sidebar Header / Brand */}
       <div className="p-5 border-b border-border/30">
         <div className="flex items-center gap-3">
-          <div className="h-9 w-9 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center glow-cyan">
-            <div className="h-2.5 w-2.5 rounded-full bg-primary animate-pulse-live" />
+          <div className="h-9 w-9 rounded-lg flex items-center justify-center overflow-hidden">
+            <img
+              src="/logo/logo.png"
+              alt="CyberWatch Logo"
+              className="h-9 w-9 object-contain"
+            />
           </div>
           <div>
             <h1 className="text-sm font-bold tracking-wider text-foreground uppercase font-sans">
@@ -190,9 +194,9 @@ export function AppSidebar() {
                 router.push(`/search?q=${encodeURIComponent(searchValue)}`)
               }
             }}
-            className="w-full h-10 rounded-full bg-white/[0.04] border border-border/40 pl-10 pr-16 text-xs text-foreground placeholder:text-muted-foreground/60 transition-all duration-300 ease-cyber focus:outline-none focus:border-primary/50 focus:bg-white/[0.06] focus:glow-cyan"
+            className="w-full h-10 rounded-full bg-muted/50 border border-border/40 pl-10 pr-16 text-xs text-foreground placeholder:text-muted-foreground/60 transition-all duration-300 ease-cyber focus:outline-none focus:border-primary/50 focus:bg-muted/80 dark:focus:glow-cyan"
           />
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-mono text-muted-foreground/70 bg-white/[0.06] px-2 py-0.5 rounded border border-border/30">
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-mono text-muted-foreground/70 bg-muted/80 px-2 py-0.5 rounded border border-border/30">
             ⌘K
           </span>
         </div>
@@ -218,8 +222,8 @@ export function AppSidebar() {
                   className={cn(
                     "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs transition-all duration-300 ease-cyber group/tier",
                     isSelected
-                      ? "bg-primary/10 text-primary border border-primary/20 glow-cyan"
-                      : "text-[#A0AEC0] hover:text-foreground hover:bg-white/[0.04] hover:translate-x-1"
+                      ? "bg-primary/10 text-primary border border-primary/20 dark:glow-cyan"
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted/50 hover:translate-x-1"
                   )}
                 >
                   <div
@@ -227,7 +231,7 @@ export function AppSidebar() {
                       "h-7 w-7 rounded-md flex items-center justify-center flex-shrink-0 border transition-all duration-300",
                       isSelected
                         ? "bg-primary/15 border-primary/30"
-                        : "bg-white/[0.03] border-border/30 group-hover/tier:border-primary/20"
+                        : "bg-muted/50 border-border/30 group-hover/tier:border-primary/20"
                     )}
                   >
                     <Icon
@@ -279,7 +283,7 @@ export function AppSidebar() {
                 <button
                   key={region.iso}
                   onClick={() => router.push(`/countries?iso=${region.iso}`)}
-                  className="group/card flex flex-col p-3 rounded-lg bg-[#121420]/40 border border-slate-800/80 transition-all duration-300 ease-cyber hover:scale-[1.03] hover:bg-gradient-to-br hover:from-[#121420] hover:to-[#16192b] hover:border-[#00F0FF]/40 text-left"
+                  className="group/card flex flex-col p-3 rounded-lg bg-card/60 border border-border/80 transition-all duration-300 ease-cyber hover:scale-[1.03] hover:bg-gradient-to-br hover:from-card hover:to-accent/30 hover:border-primary/40 text-left"
                 >
                   {/* Top Row: Flag + Name + Count */}
                   <div className="flex items-center justify-between w-full">
@@ -287,17 +291,17 @@ export function AppSidebar() {
                       <span className="text-sm leading-none flex-shrink-0">
                         {region.flag}
                       </span>
-                      <span className="text-xs font-semibold text-slate-200 truncate">
+                      <span className="text-xs font-semibold text-foreground truncate">
                         {region.name}
                       </span>
                     </div>
-                    <span className="text-[10px] text-[#00F0FF] font-mono bg-[#00F0FF]/10 px-1.5 py-0.5 rounded flex-shrink-0 ml-1">
+                    <span className="text-[10px] text-primary font-mono bg-primary/10 px-1.5 py-0.5 rounded flex-shrink-0 ml-1">
                       {region.cameraCount.toLocaleString()}
                     </span>
                   </div>
 
                   {/* Bottom Row: Metadata Tags */}
-                  <p className="text-[9px] text-slate-500 font-sans tracking-wide truncate mt-1.5 w-full">
+                  <p className="text-[9px] text-muted-foreground font-sans tracking-wide truncate mt-1.5 w-full">
                     {region.metadata}
                   </p>
                 </button>
@@ -308,7 +312,7 @@ export function AppSidebar() {
           {/* View More / Collapse Trigger Bar */}
           <button
             onClick={() => setShowAllRegions(!showAllRegions)}
-            className="mt-3 w-full flex items-center justify-center gap-1.5 py-2 rounded-lg bg-white/[0.03] border border-border/30 text-[10px] font-mono text-primary/70 hover:text-primary hover:bg-white/[0.05] hover:border-primary/30 transition-all duration-300 ease-cyber"
+            className="mt-3 w-full flex items-center justify-center gap-1.5 py-2 rounded-lg bg-muted/50 border border-border/30 text-[10px] font-mono text-primary/70 hover:text-primary hover:bg-muted/80 hover:border-primary/30 transition-all duration-300 ease-cyber"
           >
             <ChevronDown
               className={cn(
@@ -323,10 +327,24 @@ export function AppSidebar() {
 
       {/* Sidebar Footer */}
       <div className="p-4 border-t border-border/30">
-        <div className="flex items-center gap-2 text-[10px] font-mono text-muted-foreground">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#39FF14] animate-pulse-live" />
-          <span className="tracking-wider">SYSTEM ONLINE</span>
-          <span className="ml-auto opacity-50">v2.0.1</span>
+        <div className="flex items-center gap-3">
+          <img
+            src="/logo/logo.png"
+            alt="CyberWatch Logo"
+            className="h-7 w-7 rounded-md object-contain"
+          />
+          <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+            <div className="flex items-center gap-2">
+              <span className="h-1.5 w-1.5 rounded-full bg-green-500 dark:bg-[#39FF14] animate-pulse-live" />
+              <span className="text-[10px] font-mono text-muted-foreground tracking-wider">
+                SYSTEM ONLINE
+              </span>
+            </div>
+            <span className="text-[9px] font-mono text-muted-foreground/50 tracking-wider">
+              MICROSERVICE HEALTH: NOMINAL
+            </span>
+          </div>
+          <span className="text-[10px] font-mono text-muted-foreground/50">v2.0.1</span>
         </div>
       </div>
     </aside>
