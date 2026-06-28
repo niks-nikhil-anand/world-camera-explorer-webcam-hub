@@ -14,66 +14,162 @@ import {
   TrainFront,
   CloudSun,
   Bird,
-  Squirrel,
-  PawPrint,
-  Landmark,
+  Globe,
+  Satellite,
   ChevronDown,
-  SlidersHorizontal,
   type LucideIcon,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { CATEGORIES } from "@/constants"
-import { mockCountries } from "@/lib/mock-data"
 
-const ICON_MAP: Record<string, LucideIcon> = {
-  Car,
-  Plane: PlaneTakeoff,
-  Waves,
-  Mountain,
-  TreePine,
-  Building2,
-  Ship,
-  TrainFront,
-  CloudSun,
-  Bird,
-  Squirrel,
-  PawPrint,
-  Landmark,
-  Trees: TreePine,
-}
+// Infrastructure Tiers with system codes
+const INFRASTRUCTURE_TIERS = [
+  {
+    code: "NET_01",
+    label: "Highway & Municipal Traffic",
+    icon: Car,
+    description: "Traffic cameras & road networks",
+  },
+  {
+    code: "EUR_02",
+    label: "European Mobility & DATEX II",
+    icon: Globe,
+    description: "EU standardized transit feeds",
+  },
+  {
+    code: "MET_03",
+    label: "Environmental & Meteorological",
+    icon: CloudSun,
+    description: "Weather & agricultural observatories",
+  },
+  {
+    code: "AGR_04",
+    label: "Global Aggregators & Leisure",
+    icon: Satellite,
+    description: "Tourism & commercial platforms",
+  },
+  {
+    code: "BIO_05",
+    label: "Wildlife & Marine Research",
+    icon: Bird,
+    description: "Conservation & telemetry feeds",
+  },
+  {
+    code: "LOG_06",
+    label: "Ports, Aviation & Rail",
+    icon: Ship,
+    description: "Macro-logistics infrastructure",
+  },
+  {
+    code: "CIV_07",
+    label: "Civic & Academic Campuses",
+    icon: Building2,
+    description: "Universities & municipalities",
+  },
+]
+
+// Geographic Jurisdiction Engine — Bento Grid Dataset
+const GEOGRAPHIC_REGIONS = [
+  {
+    flag: "🇮🇳",
+    name: "India",
+    iso: "IN",
+    cameraCount: 3450,
+    metadata: "Traffic • Smart Cities • Railways",
+  },
+  {
+    flag: "🇺🇸",
+    name: "USA",
+    iso: "US",
+    cameraCount: 12890,
+    metadata: "Traffic • National Parks • Airports",
+  },
+  {
+    flag: "🇯🇵",
+    name: "Japan",
+    iso: "JP",
+    cameraCount: 5120,
+    metadata: "Traffic • Tourism • Ski Resorts",
+  },
+  {
+    flag: "🇪🇺",
+    name: "Europe",
+    iso: "EU",
+    cameraCount: 9430,
+    metadata: "Traffic • Mountain • City Centers",
+  },
+  {
+    flag: "🇨🇦",
+    name: "Canada",
+    iso: "CA",
+    cameraCount: 2110,
+    metadata: "Highways • National Parks • Cities",
+  },
+  {
+    flag: "🇦🇺",
+    name: "Australia",
+    iso: "AU",
+    cameraCount: 1840,
+    metadata: "Beaches • Traffic • Weather",
+  },
+  {
+    flag: "🇳🇿",
+    name: "New Zealand",
+    iso: "NZ",
+    cameraCount: 760,
+    metadata: "Roads • Mountains • Tourism",
+  },
+  {
+    flag: "🇸🇬",
+    name: "Singapore",
+    iso: "SG",
+    cameraCount: 1200,
+    metadata: "Traffic • City Cameras • Smart Grid",
+  },
+  {
+    flag: "🇰🇷",
+    name: "South Korea",
+    iso: "KR",
+    cameraCount: 2340,
+    metadata: "Traffic • Tourism • Gov Networks",
+  },
+  {
+    flag: "🇦🇪",
+    name: "UAE",
+    iso: "AE",
+    cameraCount: 980,
+    metadata: "Urban • Luxury Tourism • Traffic",
+  },
+  {
+    flag: "🌎",
+    name: "Global Nodes",
+    iso: "GLOBAL",
+    cameraCount: 4500,
+    metadata: "Wildlife • Volcanoes • Deep Ocean",
+  },
+]
 
 export function AppSidebar() {
   const router = useRouter()
   const [searchValue, setSearchValue] = useState("")
-  const [showAllCountries, setShowAllCountries] = useState(false)
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
-  const [viewerRange, setViewerRange] = useState(50)
-
-  const visibleCountries = showAllCountries
-    ? mockCountries
-    : mockCountries.slice(0, 6)
-
-  const toggleCategory = (value: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(value)
-        ? prev.filter((c) => c !== value)
-        : [...prev, value]
-    )
-  }
+  const [selectedTier, setSelectedTier] = useState<string | null>(null)
+  const [showAllRegions, setShowAllRegions] = useState(false)
 
   return (
-    <aside className="w-[320px] h-screen flex-shrink-0 border-r border-border border-glow bg-[#0D0E14] flex flex-col overflow-hidden">
+    <aside className="w-[340px] h-screen flex-shrink-0 border-r border-border/50 bg-[#0D0E14] flex flex-col overflow-hidden relative">
+      {/* Micro-etched glass edge */}
+      <div className="absolute top-0 right-0 bottom-0 w-px bg-gradient-to-b from-primary/20 via-primary/5 to-primary/20" />
+
       {/* Sidebar Header / Brand */}
-      <div className="p-5 border-b border-border/50">
-        <div className="flex items-center gap-2.5">
-          <div className="h-8 w-8 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center glow-cyan">
-            <div className="h-2 w-2 rounded-full bg-primary animate-pulse-live" />
+      <div className="p-5 border-b border-border/30">
+        <div className="flex items-center gap-3">
+          <div className="h-9 w-9 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center glow-cyan">
+            <div className="h-2.5 w-2.5 rounded-full bg-primary animate-pulse-live" />
           </div>
           <div>
-            <h1 className="text-sm font-bold tracking-wider text-foreground uppercase">
+            <h1 className="text-sm font-bold tracking-wider text-foreground uppercase font-sans">
               CyberWatch
             </h1>
-            <p className="text-[10px] font-mono text-muted-foreground tracking-widest">
+            <p className="text-[10px] font-mono text-muted-foreground tracking-[0.2em]">
               LIVE HUB v2.0
             </p>
           </div>
@@ -83,7 +179,7 @@ export function AppSidebar() {
       {/* Search */}
       <div className="px-4 pt-4 pb-2">
         <div className="relative group">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-primary/70" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-primary/70 transition-colors group-focus-within:text-primary" />
           <input
             type="text"
             placeholder="Search streams..."
@@ -94,9 +190,9 @@ export function AppSidebar() {
                 router.push(`/search?q=${encodeURIComponent(searchValue)}`)
               }
             }}
-            className="w-full h-9 rounded-full bg-white/5 border border-border/50 pl-9 pr-16 text-xs text-foreground placeholder:text-muted-foreground transition-all focus:outline-none focus:border-primary/50 focus:glow-cyan"
+            className="w-full h-10 rounded-full bg-white/[0.04] border border-border/40 pl-10 pr-16 text-xs text-foreground placeholder:text-muted-foreground/60 transition-all duration-300 ease-cyber focus:outline-none focus:border-primary/50 focus:bg-white/[0.06] focus:glow-cyan"
           />
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-mono text-muted-foreground bg-white/5 px-1.5 py-0.5 rounded border border-border/30">
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-mono text-muted-foreground/70 bg-white/[0.06] px-2 py-0.5 rounded border border-border/30">
             ⌘K
           </span>
         </div>
@@ -104,35 +200,60 @@ export function AppSidebar() {
 
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto scrollbar-cyber px-4 pb-4">
-        {/* Categories */}
+        {/* Core Infrastructure Tiers */}
         <div className="mt-4">
-          <h3 className="text-[10px] font-mono font-semibold text-muted-foreground uppercase tracking-widest mb-3">
-            Categories
+          <h3 className="text-[10px] font-mono font-semibold text-muted-foreground uppercase tracking-[0.2em] mb-3">
+            Infrastructure Tiers
           </h3>
           <div className="space-y-0.5">
-            {CATEGORIES.map((cat) => {
-              const Icon = ICON_MAP[cat.icon] || Building2
-              const isSelected = selectedCategories.includes(cat.value)
+            {INFRASTRUCTURE_TIERS.map((tier) => {
+              const Icon = tier.icon
+              const isSelected = selectedTier === tier.code
               return (
                 <button
-                  key={cat.value}
-                  onClick={() => toggleCategory(cat.value)}
+                  key={tier.code}
+                  onClick={() =>
+                    setSelectedTier(isSelected ? null : tier.code)
+                  }
                   className={cn(
-                    "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 group/item",
+                    "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs transition-all duration-300 ease-cyber group/tier",
                     isSelected
-                      ? "bg-primary/10 text-primary border border-primary/20"
-                      : "text-hologram-silver hover:text-foreground hover:bg-white/5 hover:translate-x-1"
+                      ? "bg-primary/10 text-primary border border-primary/20 glow-cyan"
+                      : "text-[#A0AEC0] hover:text-foreground hover:bg-white/[0.04] hover:translate-x-1"
                   )}
                 >
-                  <Icon
+                  <div
                     className={cn(
-                      "h-3.5 w-3.5 flex-shrink-0 transition-colors",
-                      isSelected ? "text-primary" : "text-muted-foreground group-hover/item:text-primary/70"
+                      "h-7 w-7 rounded-md flex items-center justify-center flex-shrink-0 border transition-all duration-300",
+                      isSelected
+                        ? "bg-primary/15 border-primary/30"
+                        : "bg-white/[0.03] border-border/30 group-hover/tier:border-primary/20"
                     )}
-                  />
-                  <span className="flex-1 text-left">{cat.label}</span>
+                  >
+                    <Icon
+                      className={cn(
+                        "h-3.5 w-3.5 transition-colors duration-300",
+                        isSelected
+                          ? "text-primary"
+                          : "text-muted-foreground group-hover/tier:text-primary/70"
+                      )}
+                    />
+                  </div>
+                  <div className="flex-1 text-left min-w-0">
+                    <span className="block text-[11px] font-medium truncate">
+                      {tier.label}
+                    </span>
+                    <span
+                      className={cn(
+                        "block text-[9px] font-mono tracking-wider mt-0.5",
+                        isSelected ? "text-primary/60" : "text-muted-foreground/50"
+                      )}
+                    >
+                      [{tier.code}]
+                    </span>
+                  </div>
                   {isSelected && (
-                    <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse flex-shrink-0" />
                   )}
                 </button>
               )
@@ -140,69 +261,71 @@ export function AppSidebar() {
           </div>
         </div>
 
-        {/* Geographic Filter */}
+        {/* Geographic Jurisdiction Engine — Bento Grid */}
         <div className="mt-6">
-          <h3 className="text-[10px] font-mono font-semibold text-muted-foreground uppercase tracking-widest mb-3">
-            Region Filter
+          <h3 className="text-[10px] font-mono font-semibold text-muted-foreground uppercase tracking-[0.2em] mb-3">
+            Geographic Jurisdiction
           </h3>
-          <div className="space-y-1">
-            {visibleCountries.map((country) => (
-              <button
-                key={country.id}
-                onClick={() => router.push(`/countries?iso=${country.iso}`)}
-                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs text-[#A0AEC0] hover:text-foreground hover:bg-white/5 transition-all duration-200 hover:translate-x-1 group/country"
-              >
-                <span className="text-base leading-none">{country.flag}</span>
-                <span className="flex-1 text-left font-medium">{country.name}</span>
-                <span className="text-[10px] font-mono text-muted-foreground bg-white/5 px-1.5 py-0.5 rounded">
-                  {country.cameraCount.toLocaleString()}
-                </span>
-              </button>
-            ))}
+
+          {/* Collapsible Grid Container */}
+          <div
+            className={cn(
+              "overflow-hidden transition-all duration-500 ease-in-out",
+              showAllRegions ? "max-h-[1200px]" : "max-h-[340px]"
+            )}
+          >
+            <div className="grid grid-cols-2 gap-3">
+              {(showAllRegions ? GEOGRAPHIC_REGIONS : GEOGRAPHIC_REGIONS.slice(0, 6)).map((region) => (
+                <button
+                  key={region.iso}
+                  onClick={() => router.push(`/countries?iso=${region.iso}`)}
+                  className="group/card flex flex-col p-3 rounded-lg bg-[#121420]/40 border border-slate-800/80 transition-all duration-300 ease-cyber hover:scale-[1.03] hover:bg-gradient-to-br hover:from-[#121420] hover:to-[#16192b] hover:border-[#00F0FF]/40 text-left"
+                >
+                  {/* Top Row: Flag + Name + Count */}
+                  <div className="flex items-center justify-between w-full">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span className="text-sm leading-none flex-shrink-0">
+                        {region.flag}
+                      </span>
+                      <span className="text-xs font-semibold text-slate-200 truncate">
+                        {region.name}
+                      </span>
+                    </div>
+                    <span className="text-[10px] text-[#00F0FF] font-mono bg-[#00F0FF]/10 px-1.5 py-0.5 rounded flex-shrink-0 ml-1">
+                      {region.cameraCount.toLocaleString()}
+                    </span>
+                  </div>
+
+                  {/* Bottom Row: Metadata Tags */}
+                  <p className="text-[9px] text-slate-500 font-sans tracking-wide truncate mt-1.5 w-full">
+                    {region.metadata}
+                  </p>
+                </button>
+              ))}
+            </div>
           </div>
+
+          {/* View More / Collapse Trigger Bar */}
           <button
-            onClick={() => setShowAllCountries(!showAllCountries)}
-            className="mt-2 flex items-center gap-1 px-3 text-[10px] font-mono text-primary/70 hover:text-primary transition-colors"
+            onClick={() => setShowAllRegions(!showAllRegions)}
+            className="mt-3 w-full flex items-center justify-center gap-1.5 py-2 rounded-lg bg-white/[0.03] border border-border/30 text-[10px] font-mono text-primary/70 hover:text-primary hover:bg-white/[0.05] hover:border-primary/30 transition-all duration-300 ease-cyber"
           >
             <ChevronDown
               className={cn(
-                "h-3 w-3 transition-transform",
-                showAllCountries && "rotate-180"
+                "h-3 w-3 transition-transform duration-500 ease-in-out",
+                showAllRegions && "rotate-180"
               )}
             />
-            {showAllCountries ? "Show less" : "Show all regions"}
+            {showAllRegions ? "Collapse Region Matrix" : "View More Regions"}
           </button>
-        </div>
-
-        {/* Popularity / Viewer Slider */}
-        <div className="mt-6">
-          <h3 className="text-[10px] font-mono font-semibold text-muted-foreground uppercase tracking-widest mb-3 flex items-center gap-2">
-            <SlidersHorizontal className="h-3 w-3" />
-            Viewer Threshold
-          </h3>
-          <div className="px-1">
-            <input
-              type="range"
-              min={0}
-              max={100}
-              value={viewerRange}
-              onChange={(e) => setViewerRange(Number(e.target.value))}
-              className="w-full h-1 bg-border rounded-full appearance-none cursor-pointer accent-primary [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-primary [&::-webkit-slider-thumb]:shadow-[0_0_6px_#00F0FF]"
-            />
-            <div className="flex justify-between mt-1.5 text-[10px] font-mono text-muted-foreground">
-              <span>1k</span>
-              <span className="text-primary/70">{Math.round(viewerRange * 5)}k+</span>
-              <span>500k+</span>
-            </div>
-          </div>
         </div>
       </div>
 
       {/* Sidebar Footer */}
-      <div className="p-4 border-t border-border/50">
+      <div className="p-4 border-t border-border/30">
         <div className="flex items-center gap-2 text-[10px] font-mono text-muted-foreground">
           <span className="h-1.5 w-1.5 rounded-full bg-[#39FF14] animate-pulse-live" />
-          <span>SYSTEM ONLINE</span>
+          <span className="tracking-wider">SYSTEM ONLINE</span>
           <span className="ml-auto opacity-50">v2.0.1</span>
         </div>
       </div>
