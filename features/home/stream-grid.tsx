@@ -9,8 +9,8 @@ import type { Camera } from "@/types"
 
 function StreamCardSkeleton() {
   return (
-    <div className="flex flex-col overflow-hidden rounded-lg border border-border/30 bg-[#121420]/40 backdrop-blur-sm animate-pulse">
-      <div className="aspect-video bg-white/[0.03]" />
+    <div className="flex flex-col overflow-hidden rounded-lg border border-border/30 bg-card/60 backdrop-blur-sm animate-pulse">
+      <div className="aspect-video bg-muted/50" />
     </div>
   )
 }
@@ -44,10 +44,10 @@ function StreamCard({ camera, index }: { camera: Camera; index: number }) {
   return (
     <div
       ref={ref}
-      className="group relative flex flex-col overflow-hidden rounded-lg border border-border/50 bg-[#121420]/65 backdrop-blur-md transition-all duration-300 ease-cyber hover:scale-[1.03] hover:border-primary/60 hover:glow-cyan-strong hover:z-10"
+      className="group relative flex flex-col overflow-hidden rounded-lg border border-border/50 bg-card/80 backdrop-blur-md transition-all duration-300 ease-cyber hover:scale-[1.03] hover:border-primary/60 dark:hover:glow-cyan-strong hover:shadow-lg hover:z-10"
     >
       {/* Video Container - 16:9 */}
-      <div className="relative aspect-video overflow-hidden bg-black/40">
+      <div className="relative aspect-video overflow-hidden bg-muted/30">
         <Image
           src={camera.thumbnail}
           alt={camera.name}
@@ -59,8 +59,8 @@ function StreamCard({ camera, index }: { camera: Camera; index: number }) {
         {/* Top-left: LIVE indicator */}
         <div className="absolute top-3 left-3 z-10">
           <span className="inline-flex items-center gap-1.5 rounded-sm bg-black/60 px-2 py-1 backdrop-blur-sm">
-            <span className="h-2 w-2 rounded-full bg-[#39FF14] animate-pulse-live" />
-            <span className="text-[10px] font-mono font-bold text-[#39FF14] uppercase tracking-wider text-glow-green">
+            <span className="h-2 w-2 rounded-full bg-green-500 dark:bg-[#39FF14] animate-pulse-live" />
+            <span className="text-[10px] font-mono font-bold text-green-400 dark:text-[#39FF14] uppercase tracking-wider dark:text-glow-green">
               LIVE
             </span>
           </span>
@@ -82,14 +82,14 @@ function StreamCard({ camera, index }: { camera: Camera; index: number }) {
             {camera.name}
           </h3>
           <div className="flex items-center gap-2 mt-1">
-            <div className="flex items-center gap-1 text-[11px] text-[#A0AEC0]/80">
+            <div className="flex items-center gap-1 text-[11px] text-white/70">
               <MapPin className="h-3 w-3" />
               <span className="font-mono">
                 {camera.latitude.toFixed(2)}°, {camera.longitude.toFixed(2)}°
               </span>
             </div>
-            <span className="text-[10px] text-muted-foreground">•</span>
-            <span className="text-[11px] text-[#A0AEC0]/80 capitalize font-medium font-sans">
+            <span className="text-[10px] text-white/50">•</span>
+            <span className="text-[11px] text-white/70 capitalize font-medium font-sans">
               {camera.city} / {camera.country}
             </span>
           </div>
@@ -97,7 +97,7 @@ function StreamCard({ camera, index }: { camera: Camera; index: number }) {
 
         {/* Hover: Expand button slides in */}
         <div className="absolute inset-0 flex items-center justify-center opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-cyber z-10">
-          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/20 border border-primary/40 backdrop-blur-md text-primary text-xs font-mono font-medium hover:bg-primary/30 transition-colors glow-cyan">
+          <button className="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/20 border border-primary/40 backdrop-blur-md text-primary text-xs font-mono font-medium hover:bg-primary/30 transition-colors dark:glow-cyan">
             <Maximize2 className="h-3.5 w-3.5" />
             EXPAND FEED
           </button>
